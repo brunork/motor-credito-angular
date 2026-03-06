@@ -1,0 +1,136 @@
+<div class="simulation-container">
+  <div class="page-header">
+    <h1>Nova Simulação</h1>
+  </div>
+
+  <div class="simulation-card">
+    <!-- Stepper -->
+    <div class="stepper">
+      <div class="step" [class.active]="currentStep >= 1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Dados do Cliente</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep >= 2"></div>
+      <div class="step" [class.active]="currentStep >= 2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Dados Financeiros</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep >= 3"></div>
+      <div class="step" [class.active]="currentStep >= 3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Seleção de Produto</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Dados do Cliente -->
+    <form [formGroup]="step1Form" *ngIf="currentStep === 1" class="step-content">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" formControlName="nome" placeholder="Frederico Ipsum">
+        </div>
+        <div class="form-group">
+          <label>Sobrenome</label>
+          <input type="text" formControlName="sobrenome" placeholder="Frederico Ipsum">
+        </div>
+        <div class="form-group">
+          <label>CPF</label>
+          <input type="text" formControlName="cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group full-width">
+          <label>E-mail</label>
+          <input type="email" formControlName="email" placeholder="frederico@example.com">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-primary" (click)="nextStep()" [disabled]="!step1Form.valid">Continuar</button>
+      </div>
+    </form>
+
+    <!-- Step 2: Dados Financeiros -->
+    <form [formGroup]="step2Form" *ngIf="currentStep === 2" class="step-content">
+      <div class="form-grid">
+        <div class="form-column">
+          <div class="form-group">
+            <label>Renda mensal comprovada</label>
+            <input type="text" formControlName="renda">
+          </div>
+          <div class="form-group">
+            <label>Valor subsídio governamental</label>
+            <input type="text" formControlName="subsidio">
+          </div>
+          <div class="form-group">
+            <label>Saldo FGTS</label>
+            <input type="text" formControlName="fgts">
+          </div>
+          <div class="form-group">
+            <label>Valor aprovado financiamento</label>
+            <input type="text" formControlName="valorAprovado">
+          </div>
+        </div>
+
+        <div class="form-column">
+          <div class="form-group">
+            <label>Percentual financiamento</label>
+            <div class="toggle-group">
+              <button type="button" 
+                      class="toggle-btn" 
+                      [class.active]="step2Form.get('percentual')?.value === 80"
+                      (click)="setPercentual(80)">80%</button>
+              <button type="button" 
+                      class="toggle-btn" 
+                      [class.active]="step2Form.get('percentual')?.value === 90"
+                      (click)="setPercentual(90)">90%</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Primeiro imóvel do cliente</label>
+            <div class="toggle-group">
+              <button type="button" 
+                      class="toggle-btn" 
+                      [class.active]="step2Form.get('primeiroImovel')?.value === true"
+                      (click)="setPrimeiroImovel(true)">Sim</button>
+              <button type="button" 
+                      class="toggle-btn" 
+                      [class.active]="step2Form.get('primeiroImovel')?.value === false"
+                      (click)="setPrimeiroImovel(false)">Não</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-primary" (click)="nextStep()" [disabled]="!step2Form.valid">Continuar</button>
+      </div>
+    </form>
+
+    <!-- Step 3: Seleção de Produto -->
+    <form [formGroup]="step3Form" *ngIf="currentStep === 3" class="step-content">
+      <div class="form-grid single-column">
+        <div class="form-group">
+          <label>Empreendimento escolhido</label>
+          <select formControlName="empreendimento">
+            <option value="">Selecione</option>
+            <option value="1">Residencial Parque das Flores</option>
+            <option value="2">Condomínio Viver Bem</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Empreendimento escolhido</label> <!-- Keeping label as per design request, though likely 'Unidade' -->
+          <select formControlName="unidade">
+            <option value="">Selecione</option>
+            <option value="1">Unidade 101 - Bloco A</option>
+            <option value="2">Unidade 202 - Bloco B</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-primary" (click)="submit()" [disabled]="!step3Form.valid">Enviar</button>
+      </div>
+    </form>
+
+  </div>
+</div>

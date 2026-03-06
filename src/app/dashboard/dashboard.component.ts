@@ -1,58 +1,32 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { 
   LucideAngularModule, 
-  LayoutDashboard, 
-  FileText, 
-  Briefcase, 
-  Users, 
-  Building, 
-  Settings, 
-  Menu, 
-  Search, 
-  Bell, 
-  ChevronDown, 
-  Download, 
-  ArrowUp, 
-  ArrowDown, 
   DollarSign, 
   BarChart2, 
   UserPlus, 
+  ArrowUp, 
+  ArrowDown, 
   Calendar, 
   MoreHorizontal, 
   MoreVertical,
-  ChevronRight,
-  User,
-  LogOut
+  ChevronDown,
+  Download
 } from 'lucide-angular';
 
 const ICONS = {
-  LayoutDashboard, 
-  FileText, 
-  Briefcase, 
-  Users, 
-  Building, 
-  Settings, 
-  Menu, 
-  Search, 
-  Bell, 
-  ChevronDown, 
-  Download, 
-  ArrowUp, 
-  ArrowDown, 
   DollarSign, 
   BarChart2, 
   UserPlus, 
+  ArrowUp, 
+  ArrowDown, 
   Calendar, 
   MoreHorizontal, 
   MoreVertical,
-  ChevronRight,
-  User,
-  LogOut
+  ChevronDown,
+  Download
 };
 
 @Component({
@@ -66,25 +40,10 @@ const ICONS = {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+export class DashboardComponent {
   
-  // User info
-  userName: string = 'Carregando...';
-  isProfileDropdownOpen: boolean = false;
-
-  // Make icons available to template just in case we use [icon]="icons.Name"
+  // Make icons available to template
   readonly icons = ICONS;
-
-  constructor() {
-    // If LucideAngularModule.pick is not used in imports (because of potential issues with const in decorator in some strict setups),
-    // we can try to rely on global registration or just use the icons directly if the template supports it.
-    // However, the cleanest way is usually importing the module with pick.
-    // Since I already wrote imports: [LucideAngularModule] above without pick, I should probably change it.
-    // But I can't edit the decorator easily with Write tool without rewriting the whole file.
-    // I will rewrite the file to include .pick() in imports.
-  }
 
   // --- Charts Configuration ---
 
@@ -229,41 +188,4 @@ export class DashboardComponent implements OnInit {
     { client: 'Gloria Mckinney', number: '#790857', value: '$5.600', type: 'Lorem', date: '12.09.2019', avatar: 'https://i.pravatar.cc/150?u=gloria' },
     { client: 'Randall Fisher', number: '#790687', value: '$2.850', type: 'Lorem', date: '12.09.2019', avatar: 'https://i.pravatar.cc/150?u=randall' },
   ];
-
-  ngOnInit() {
-    this.loadUserProfile();
-  }
-
-  loadUserProfile() {
-    this.authService.getUserAttributes().subscribe({
-      next: (attributes) => {
-        // Tenta pegar o nome, se não tiver, pega o email, ou um fallback
-        this.userName = attributes.name || attributes.email || 'Usuário';
-      },
-      error: (err) => {
-        console.error('Erro ao carregar perfil:', err);
-        this.userName = 'Usuário';
-      }
-    });
-  }
-
-  toggleProfileDropdown() {
-    this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
-  }
-
-  editProfile() {
-    console.log('Editar perfil');
-    this.isProfileDropdownOpen = false;
-  }
-
-  settings() {
-    console.log('Configurações');
-    this.isProfileDropdownOpen = false;
-  }
-
-  logout() {
-    this.authService.signOut().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
-  }
 }

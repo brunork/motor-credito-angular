@@ -1,0 +1,91 @@
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="/logo-green.png" alt="Morar Construtora" class="logo">
+    </div>
+    
+    <div class="sidebar-search">
+      <lucide-icon name="search" class="search-icon"></lucide-icon>
+      <input type="text" placeholder="Buscar...">
+    </div>
+
+    <div class="menu-label">MAIN MENU</div>
+    
+    <nav class="sidebar-menu">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="menu-item">
+        <lucide-icon name="layout-dashboard"></lucide-icon>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/dashboard/nova-simulacao" routerLinkActive="active" class="menu-item">
+        <lucide-icon name="file-text"></lucide-icon>
+        <span>Nova Simulação</span>
+      </a>
+      <a href="#" class="menu-item has-submenu">
+        <div class="menu-item-content">
+          <lucide-icon name="briefcase"></lucide-icon>
+          <span>Minhas Propostas</span>
+        </div>
+        <lucide-icon name="chevron-right" class="chevron"></lucide-icon>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="users"></lucide-icon>
+        <span>Clientes</span>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="building"></lucide-icon>
+        <span>Empreendimentos</span>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="settings"></lucide-icon>
+        <span>Configurações</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="top-bar">
+      <button class="menu-toggle">
+        <lucide-icon name="menu"></lucide-icon>
+      </button>
+      
+      <div class="top-bar-actions">
+        <button class="icon-btn">
+          <lucide-icon name="search"></lucide-icon>
+        </button>
+        <button class="icon-btn">
+          <lucide-icon name="bell"></lucide-icon>
+          <span class="badge"></span>
+        </button>
+        <div class="user-profile" (click)="toggleProfileDropdown()">
+          <img src="https://i.pravatar.cc/150?u=user" alt="User" class="avatar">
+          <span class="user-name">{{ userName }}</span>
+          <lucide-icon name="chevron-down"></lucide-icon>
+
+          <div class="dropdown-menu" *ngIf="isProfileDropdownOpen" (click)="$event.stopPropagation()">
+            <button (click)="editProfile()" class="dropdown-item">
+              <lucide-icon name="user" size="16"></lucide-icon>
+              Editar Perfil
+            </button>
+            <button (click)="settings()" class="dropdown-item">
+              <lucide-icon name="settings" size="16"></lucide-icon>
+              Configurações
+            </button>
+            <div class="dropdown-divider"></div>
+            <button (click)="logout()" class="dropdown-item text-danger">
+              <lucide-icon name="log-out" size="16"></lucide-icon>
+              Sair
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

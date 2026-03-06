@@ -24,7 +24,9 @@ import {
   Calendar, 
   MoreHorizontal, 
   MoreVertical,
-  ChevronRight
+  ChevronRight,
+  User,
+  LogOut
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -49,7 +51,9 @@ const ICONS = {
   Calendar, 
   MoreHorizontal, 
   MoreVertical,
-  ChevronRight
+  ChevronRight,
+  User,
+  LogOut
 };
 
 export const appConfig: ApplicationConfig = {
