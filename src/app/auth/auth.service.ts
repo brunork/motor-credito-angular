@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { signUp, confirmSignUp, signIn, signOut, fetchAuthSession, resendSignUpCode, AuthSession, SignUpOutput, SignInOutput, ResendSignUpCodeOutput } from 'aws-amplify/auth';
+import { signUp, confirmSignUp, signIn, signOut, fetchAuthSession, fetchUserAttributes, resendSignUpCode, AuthSession, SignUpOutput, SignInOutput, ResendSignUpCodeOutput, FetchUserAttributesOutput } from 'aws-amplify/auth';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -84,6 +84,11 @@ export class AuthService {
       map(session => session.tokens?.accessToken?.toString()),
       catchError(() => of(undefined))
     );
+  }
+
+  // Recuperar atributos do usuário logado
+  getUserAttributes(): Observable<FetchUserAttributesOutput> {
+    return from(fetchUserAttributes());
   }
   
   // Método auxiliar para verificar síncrono (se já carregou)

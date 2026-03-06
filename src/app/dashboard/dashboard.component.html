@@ -1,0 +1,313 @@
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="/logo-green.png" alt="Morar Construtora" class="logo">
+    </div>
+    
+    <div class="sidebar-search">
+      <lucide-icon name="search" class="search-icon"></lucide-icon>
+      <input type="text" placeholder="Buscar...">
+    </div>
+
+    <div class="menu-label">MAIN MENU</div>
+    
+    <nav class="sidebar-menu">
+      <a href="#" class="menu-item active">
+        <lucide-icon name="layout-dashboard"></lucide-icon>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="file-text"></lucide-icon>
+        <span>Nova Simulação</span>
+      </a>
+      <a href="#" class="menu-item has-submenu">
+        <div class="menu-item-content">
+          <lucide-icon name="briefcase"></lucide-icon>
+          <span>Minhas Propostas</span>
+        </div>
+        <lucide-icon name="chevron-right" class="chevron"></lucide-icon>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="users"></lucide-icon>
+        <span>Clientes</span>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="building"></lucide-icon>
+        <span>Empreendimentos</span>
+      </a>
+      <a href="#" class="menu-item">
+        <lucide-icon name="settings"></lucide-icon>
+        <span>Configurações</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="top-bar">
+      <button class="menu-toggle">
+        <lucide-icon name="menu"></lucide-icon>
+      </button>
+      
+      <div class="top-bar-actions">
+        <button class="icon-btn">
+          <lucide-icon name="search"></lucide-icon>
+        </button>
+        <button class="icon-btn">
+          <lucide-icon name="bell"></lucide-icon>
+          <span class="badge"></span>
+        </button>
+        <div class="user-profile" (click)="toggleProfileDropdown()">
+          <img src="https://i.pravatar.cc/150?u=user" alt="User" class="avatar">
+          <span class="user-name">{{ userName }}</span>
+          <lucide-icon name="chevron-down"></lucide-icon>
+
+          <div class="dropdown-menu" *ngIf="isProfileDropdownOpen" (click)="$event.stopPropagation()">
+            <button (click)="editProfile()" class="dropdown-item">
+              <lucide-icon name="user" size="16"></lucide-icon>
+              Editar Perfil
+            </button>
+            <button (click)="settings()" class="dropdown-item">
+              <lucide-icon name="settings" size="16"></lucide-icon>
+              Configurações
+            </button>
+            <div class="dropdown-divider"></div>
+            <button (click)="logout()" class="dropdown-item text-danger">
+              <lucide-icon name="log-out" size="16"></lucide-icon>
+              Sair
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h1>Overview</h1>
+        <div class="header-actions">
+          <button class="btn-icon-only">
+            <lucide-icon name="download"></lucide-icon>
+          </button>
+          <button class="btn-dropdown">
+            <span>Últimos 7 dias</span>
+            <lucide-icon name="chevron-down"></lucide-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="card summary-card">
+          <div class="card-content">
+            <div class="card-info">
+              <span class="card-label">Propostas aprovadas</span>
+              <div class="card-value-row">
+                <span class="value">$8.500</span>
+                <span class="trend positive">
+                  <lucide-icon name="arrow-up" size="14"></lucide-icon> 50.8%
+                </span>
+              </div>
+            </div>
+            <div class="card-icon bg-green-light">
+              <lucide-icon name="dollar-sign" class="text-green"></lucide-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="card summary-card">
+          <div class="card-content">
+            <div class="card-info">
+              <span class="card-label">Total</span>
+              <div class="card-value-row">
+                <span class="value">3.500K</span>
+                <span class="trend negative">
+                  <lucide-icon name="arrow-down" size="14"></lucide-icon> 10.5%
+                </span>
+              </div>
+            </div>
+            <div class="card-icon bg-blue-light">
+              <lucide-icon name="bar-chart-2" class="text-blue"></lucide-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="card summary-card">
+          <div class="card-content">
+            <div class="card-info">
+              <span class="card-label">Novas Propostas</span>
+              <div class="card-value-row">
+                <span class="value">2.500K</span>
+                <span class="trend positive">
+                  <lucide-icon name="arrow-up" size="14"></lucide-icon> 24.9%
+                </span>
+              </div>
+            </div>
+            <div class="card-icon bg-teal-light">
+              <lucide-icon name="user-plus" class="text-teal"></lucide-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 1 -->
+      <div class="charts-row">
+        <div class="card chart-card">
+          <div class="card-header">
+            <h2>Estatísticas</h2>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="dot income"></span> Income</span>
+              <span class="legend-item"><span class="dot expense"></span> Expense</span>
+            </div>
+            <button class="btn-dropdown small">
+              <lucide-icon name="calendar"></lucide-icon>
+              <span>19 Aug – 25 Aug</span>
+              <lucide-icon name="chevron-down"></lucide-icon>
+            </button>
+          </div>
+          <div class="chart-container">
+            <canvas baseChart
+              [data]="barChartData"
+              [options]="barChartOptions"
+              [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">
+            <h2>Analytics</h2>
+            <div class="analytics-summary">
+              <div class="summary-item positive">
+                <span class="icon-circle"><lucide-icon name="arrow-up"></lucide-icon></span>
+                <span class="value">$5.850</span>
+              </div>
+              <div class="summary-item negative">
+                <span class="icon-circle"><lucide-icon name="arrow-down"></lucide-icon></span>
+                <span class="value">$1.750</span>
+              </div>
+            </div>
+            <button class="btn-dropdown small">
+              <lucide-icon name="calendar"></lucide-icon>
+              <span>19 Aug – 25 Aug</span>
+              <lucide-icon name="chevron-down"></lucide-icon>
+            </button>
+          </div>
+          <div class="chart-container">
+            <canvas baseChart
+              [data]="lineChartData"
+              [options]="lineChartOptions"
+              [type]="'line'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 2 -->
+      <div class="charts-row">
+        <div class="card chart-card simulation-card">
+          <div class="card-header">
+            <h2>Simulações</h2>
+            <button class="btn-icon-only">
+              <lucide-icon name="more-horizontal"></lucide-icon>
+            </button>
+          </div>
+          <div class="chart-container donut-container">
+            <div class="donut-center-text">
+              <span class="total-value">3.500</span>
+              <span class="total-label">Total</span>
+            </div>
+            <canvas baseChart
+              [data]="doughnutChartData"
+              [options]="doughnutChartOptions"
+              [type]="'doughnut'">
+            </canvas>
+          </div>
+          <div class="simulation-stats">
+            <div class="stat-item">
+              <span class="dot current"></span>
+              <span class="label">Essa semana</span>
+              <span class="value">2.500</span>
+              <span class="trend positive">↑ 8.8%</span>
+            </div>
+            <div class="stat-item">
+              <span class="dot previous"></span>
+              <span class="label">Semana passada</span>
+              <span class="value">1.000</span>
+              <span class="trend negative">↓ 5.8%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">
+            <h2>Estatísticas</h2>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="dot approved"></span> Aprovados</span>
+              <span class="legend-item"><span class="dot not-approved"></span> Não Aprovados</span>
+            </div>
+            <button class="btn-dropdown small">
+              <lucide-icon name="calendar"></lucide-icon>
+              <span>19 Aug – 25 Aug</span>
+              <lucide-icon name="chevron-down"></lucide-icon>
+            </button>
+          </div>
+          <div class="chart-container">
+            <canvas baseChart
+              [data]="horizontalBarChartData"
+              [options]="horizontalBarChartOptions"
+              [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="card table-card">
+        <div class="card-header">
+          <h2>Últimas Simulações</h2>
+          <button class="btn-dropdown small">
+            <lucide-icon name="calendar"></lucide-icon>
+            <span>19 Aug – 25 Aug</span>
+            <lucide-icon name="chevron-down"></lucide-icon>
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Número</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of recentSimulations">
+                <td>
+                  <div class="user-cell">
+                    <img [src]="item.avatar" [alt]="item.client" class="avatar-small">
+                    <span>{{ item.client }}</span>
+                  </div>
+                </td>
+                <td class="text-gray">{{ item.number }}</td>
+                <td class="text-bold">{{ item.value }}</td>
+                <td class="text-gray">{{ item.type }}</td>
+                <td class="text-gray">{{ item.date }}</td>
+                <td>
+                  <button class="btn-icon-only small">
+                    <lucide-icon name="more-vertical"></lucide-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
