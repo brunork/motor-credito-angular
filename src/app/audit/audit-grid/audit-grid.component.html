@@ -1,0 +1,141 @@
+<div class="page-header">
+  <h1>Auditoria de Políticas</h1>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <h2>Filtros de Pesquisa</h2>
+  </div>
+  <div class="card-content">
+    <form [formGroup]="filterForm" (ngSubmit)="onFilterSubmit()" class="filter-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="startDate">Data Início</label>
+          <div class="input-wrapper date-input">
+            <lucide-icon name="calendar" size="16" class="input-icon"></lucide-icon>
+            <input type="date" id="startDate" formControlName="startDate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="endDate">Data Fim</label>
+          <div class="input-wrapper date-input">
+            <lucide-icon name="calendar" size="16" class="input-icon"></lucide-icon>
+            <input type="date" id="endDate" formControlName="endDate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tableName">Tabela Afetada</label>
+          <div class="input-wrapper">
+            <input type="text" id="tableName" formControlName="tableName" placeholder="Ex: TB_POLITICA">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="motivoAlteracao">Motivo / Razão</label>
+          <div class="input-wrapper">
+            <input type="text" id="motivoAlteracao" formControlName="motivoAlteracao" placeholder="Ex: Ajuste de spread">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            <lucide-icon name="search" size="18" class="mr-2"></lucide-icon>
+            Filtrar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h2>Histórico de Alterações</h2>
+    <span class="badge" *ngIf="totalElements > 0">{{ totalElements }} registros</span>
+  </div>
+  
+  <div class="table-responsive">
+    <table class="audit-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Data/Hora</th>
+          <th>Responsável</th>
+          <th>Motivo</th>
+          <th>Tabela</th>
+          <th>Campo</th>
+          <th>Valor Anterior</th>
+          <th>Valor Novo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of auditLogs">
+          <td>#{{ log.idLog }}</td>
+          <td>
+            <div class="date-cell">
+              <lucide-icon name="calendar" size="14" class="text-gray"></lucide-icon>
+              <span>{{ log.dataAlteracao | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="user-info">
+              <span class="font-medium">{{ log.usuarioNome || 'Usuário' }}</span>
+              <small class="text-gray text-xs" *ngIf="log.usuarioEmail">{{ log.usuarioEmail }}</small>
+              <small class="text-gray text-xs" *ngIf="!log.usuarioEmail && log.idUsuarioResponsavel">ID: {{ log.idUsuarioResponsavel | slice:0:8 }}...</small>
+            </div>
+          </td>
+          <td>
+            <div class="reason-cell" [title]="log.motivoAlteracao || 'Sem motivo registrado'">
+              {{ log.motivoAlteracao || '-' }}
+            </div>
+          </td>
+          <td><span class="tag">{{ log.tabelaAfetada }}</span></td>
+          <td>{{ log.campoAfetado }}</td>
+          <td class="value-cell old">
+            <div class="value-content" title="{{log.valorAnterior}}">{{ formatValue(log.valorAnterior) }}</div>
+          </td>
+          <td class="value-cell new">
+            <div class="value-content" title="{{log.valorNovo}}">{{ formatValue(log.valorNovo) }}</div>
+          </td>
+        </tr>
+        
+        <tr *ngIf="auditLogs.length === 0 && !loading">
+          <td colspan="7" class="empty-state">
+            <div class="empty-icon-container">
+              <lucide-icon name="file-text" size="48" class="text-gray-light"></lucide-icon>
+            </div>
+            <p>Nenhum registro encontrado.</p>
+          </td>
+        </tr>
+        
+        <tr *ngIf="loading">
+          <td colspan="7" class="loading-state">
+            <p>Carregando dados...</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-footer" *ngIf="totalPages > 1">
+    <div class="pagination-info">
+      Página {{ currentPage + 1 }} de {{ totalPages }}
+    </div>
+    <div class="pagination-actions">
+      <button class="btn-icon-only" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
+        <lucide-icon name="chevron-left" size="18"></lucide-icon>
+      </button>
+      
+      <div class="page-numbers">
+        <button *ngFor="let page of getPagesArray()" 
+                class="btn-page" 
+                [class.active]="page === currentPage"
+                (click)="onPageChange(page)">
+          {{ page + 1 }}
+        </button>
+      </div>
+
+      <button class="btn-icon-only" [disabled]="currentPage === totalPages - 1" (click)="onPageChange(currentPage + 1)">
+        <lucide-icon name="chevron-right" size="18"></lucide-icon>
+      </button>
+    </div>
+  </div>
+</div>

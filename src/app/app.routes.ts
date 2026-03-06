@@ -5,6 +5,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NewSimulationComponent } from './new-simulation/new-simulation.component';
+import { AuditGridComponent } from './audit/audit-grid/audit-grid.component';
 import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
+      { path: 'auditoria', component: AuditGridComponent },
       { path: '', component: DashboardComponent },
       { path: 'nova-simulacao', component: NewSimulationComponent }
     ]

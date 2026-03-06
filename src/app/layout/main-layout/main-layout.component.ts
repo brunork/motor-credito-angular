@@ -16,7 +16,8 @@ import {
   ChevronDown, 
   ChevronRight,
   User,
-  LogOut
+  LogOut,
+  History
 } from 'lucide-angular';
 
 const ICONS = {
@@ -32,7 +33,8 @@ const ICONS = {
   ChevronDown, 
   ChevronRight,
   User,
-  LogOut
+  LogOut,
+  History
 };
 
 @Component({

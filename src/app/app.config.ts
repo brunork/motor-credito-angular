@@ -26,7 +26,11 @@ import {
   MoreVertical,
   ChevronRight,
   User,
-  LogOut
+  LogOut,
+  History,
+  Eye,
+  Filter,
+  ChevronLeft
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -53,7 +57,11 @@ const ICONS = {
   MoreVertical,
   ChevronRight,
   User,
-  LogOut
+  LogOut,
+  History,
+  Eye,
+  Filter,
+  ChevronLeft
 };
 
 export const appConfig: ApplicationConfig = {
