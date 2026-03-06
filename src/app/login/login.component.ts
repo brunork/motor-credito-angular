@@ -51,15 +51,26 @@ export class LoginComponent {
         error: (err) => {
           console.error('Erro no login:', err);
           this.isLoading = false;
-          if (err.name === 'NotAuthorizedException') {
-            this.errorMessage = 'Usuário ou senha incorretos.';
-          } else if (err.name === 'UserNotFoundException') {
-            this.errorMessage = 'Usuário não encontrado.';
-          } else {
-            this.errorMessage = 'Erro ao realizar login. Tente novamente.';
+          switch (err.name) {
+            case 'NotAuthorizedException':
+              this.errorMessage = 'Usuário ou senha incorretos.';
+              break;
+            case 'UserNotFoundException':
+              this.errorMessage = 'Usuário não encontrado. Verifique o email ou cadastre-se.';
+              break;
+            case 'UserNotConfirmedException':
+              this.errorMessage = 'Usuário não confirmado. Verifique seu email.';
+              break;
+            case 'LimitExceededException':
+              this.errorMessage = 'Muitas tentativas de login. Tente novamente mais tarde.';
+              break;
+            default:
+              this.errorMessage = 'Erro ao realizar login. Tente novamente.';
           }
         }
       });
+    } else {
+      this.loginForm.markAllAsTouched();
     }
   }
 }

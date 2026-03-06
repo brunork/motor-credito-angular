@@ -33,7 +33,11 @@ export class SignupComponent {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [
+        Validators.required, 
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
+      ]],
       confirmPassword: ['', Validators.required],
       terms: [false, Validators.requiredTrue]
     }, { validators: this.passwordMatchValidator });
@@ -89,21 +93,26 @@ export class SignupComponent {
                 this.handleExistingUser(email);
                 break;
               case 'InvalidPasswordException':
-                this.errorMessage = 'A senha deve ter no mínimo 8 caracteres, conter letras maiúsculas, minúsculas, números e símbolos.';
+                this.errorMessage = 'A senha deve conter letras maiúsculas, minúsculas, números e símbolos.';
                 break;
               case 'InvalidParameterException':
                 this.errorMessage = 'Verifique se o email está no formato correto.';
                 break;
               case 'CodeDeliveryFailureException':
-                this.errorMessage = 'Falha ao enviar o código de verificação. Tente novamente.';
+                this.errorMessage = 'Falha ao enviar o código de verificação. Verifique o email informado.';
+                break;
+              case 'LimitExceededException':
+                this.errorMessage = 'Muitas tentativas. Tente novamente mais tarde.';
                 break;
               default:
-                this.errorMessage = err.message || 'Erro ao realizar cadastro. Verifique os dados.';
+                this.errorMessage = 'Erro ao realizar cadastro. Tente novamente.';
             }
             this.cd.detectChanges();
           });
         }
       });
+    } else {
+      this.signupForm.markAllAsTouched();
     }
   }
 

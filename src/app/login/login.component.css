@@ -263,3 +263,15 @@
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+/* Validation Styles */
+.input.ng-invalid.ng-touched {
+  border-color: #f44336;
+}
+
+.input-error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}

@@ -65,6 +65,9 @@
           <span class="input-error" *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched">
             Mínimo de 8 caracteres
           </span>
+          <span class="input-error" *ngIf="signupForm.get('password')?.errors?.['pattern'] && signupForm.get('password')?.touched">
+            Senha deve conter maiúsculas, minúsculas, números e símbolos
+          </span>
         </div>
 
         <div class="form-group">
