@@ -22,21 +22,32 @@
         <span class="divider-text">OU CADASTRE-SE COM EMAIL</span>
       </div>
 
-      <form>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Formulário de Cadastro -->
+      <form *ngIf="!showConfirmation" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="name" class="label">Nome completo</label>
-          <input type="text" id="name" class="input" placeholder="Frederico Ipsum">
+          <input type="text" id="name" class="input" placeholder="Frederico Ipsum" formControlName="name">
+          <span class="input-error" *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+            Nome é obrigatório
+          </span>
         </div>
 
         <div class="form-group">
           <label for="email" class="label">E-mail</label>
-          <input type="email" id="email" class="input" placeholder="frederico@example.com">
+          <input type="email" id="email" class="input" placeholder="frederico@example.com" formControlName="email">
+          <span class="input-error" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+            Digite um e-mail válido
+          </span>
         </div>
 
         <div class="form-group">
           <label for="password" class="label">Senha</label>
           <div class="password-wrapper">
-            <input [type]="showPassword ? 'text' : 'password'" id="password" class="input password-input" placeholder="••••••••">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" class="input password-input" placeholder="••••••••" formControlName="password">
             <button type="button" class="eye-btn" (click)="togglePassword()">
               <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -48,12 +59,18 @@
               </svg>
             </button>
           </div>
+          <span class="input-error" *ngIf="signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched">
+            Senha é obrigatória
+          </span>
+          <span class="input-error" *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched">
+            Mínimo de 8 caracteres
+          </span>
         </div>
 
         <div class="form-group">
           <label for="confirm-password" class="label">Confirmar senha</label>
           <div class="password-wrapper">
-            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password" class="input password-input" placeholder="••••••••">
+            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password" class="input password-input" placeholder="••••••••" formControlName="confirmPassword">
             <button type="button" class="eye-btn" (click)="toggleConfirmPassword()">
               <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -65,16 +82,42 @@
               </svg>
             </button>
           </div>
+          <span class="input-error" *ngIf="signupForm.hasError('mismatch') && signupForm.get('confirmPassword')?.touched">
+            As senhas não conferem
+          </span>
         </div>
 
         <div class="actions">
           <label class="terms">
-            <input type="checkbox" class="checkbox">
+            <input type="checkbox" class="checkbox" formControlName="terms">
             <span>Eu aceito os <a href="#" class="terms-link">Termos e Condições</a></span>
           </label>
         </div>
 
-        <button type="submit" class="submit-btn">Cadastrar</button>
+        <button type="submit" class="submit-btn" [disabled]="signupForm.invalid || isLoading">
+          {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
+        </button>
+      </form>
+
+      <!-- Formulário de Confirmação -->
+      <form *ngIf="showConfirmation" [formGroup]="confirmationForm" (ngSubmit)="onConfirm()">
+        <p class="confirmation-text">
+          Enviamos um código de verificação para o seu e-mail <strong>{{ emailToConfirm }}</strong>.
+        </p>
+        <div class="form-group">
+          <label for="code" class="label">Código de Verificação</label>
+          <input type="text" id="code" class="input" placeholder="123456" formControlName="code">
+          <span class="input-error" *ngIf="confirmationForm.get('code')?.invalid && confirmationForm.get('code')?.touched">
+            Código é obrigatório
+          </span>
+        </div>
+        <button type="submit" class="submit-btn" [disabled]="confirmationForm.invalid || isLoading">
+          {{ isLoading ? 'Confirmando...' : 'Confirmar' }}
+        </button>
+        
+        <button type="button" class="resend-btn" (click)="onResendCode()" [disabled]="isLoading">
+          Reenviar código
+        </button>
       </form>
 
       <div class="footer">

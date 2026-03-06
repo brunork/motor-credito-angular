@@ -22,16 +22,20 @@
         <span class="divider-text">OU LOGIN COM E-MAIL</span>
       </div>
 
-      <form>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="email" class="label">Email</label>
-          <input type="email" id="email" class="input" placeholder="frederico@example.com">
+          <input type="email" id="email" class="input" placeholder="frederico@example.com" formControlName="email">
         </div>
 
         <div class="form-group">
           <label for="password" class="label">Password</label>
           <div class="password-wrapper">
-            <input [type]="showPassword ? 'text' : 'password'" id="password" class="input password-input" placeholder="••••••••">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" class="input password-input" placeholder="••••••••" formControlName="password">
             <button type="button" class="eye-btn" (click)="togglePassword()">
               <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -53,7 +57,9 @@
           <a routerLink="/recuperar-senha" class="forgot-password">Esqueceu a senha?</a>
         </div>
 
-        <button type="submit" class="submit-btn">Log In</button>
+        <button type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading">
+          {{ isLoading ? 'Carregando...' : 'Log In' }}
+        </button>
       </form>
 
       <div class="footer">

@@ -246,3 +246,53 @@
     background: white;
   }
 }
+
+.error-message {
+  color: #f44336;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.confirmation-text {
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Validation Styles */
+.input.ng-invalid.ng-touched {
+  border-color: #f44336;
+}
+
+.input-error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Resend Button */
+.resend-btn {
+  background: none;
+  border: none;
+  color: #229A46;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto 0;
+  text-decoration: underline;
+}
+
+.resend-btn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
