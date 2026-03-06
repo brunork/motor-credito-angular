@@ -29,7 +29,7 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="email" class="label">Email</label>
-          <input type="email" id="email" class="input" placeholder="frederico@example.com" formControlName="email">
+          <input type="email" id="email" class="input" placeholder="nome@example.com" formControlName="email">
           <span class="input-error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
             Digite um email válido
           </span>
